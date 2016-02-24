@@ -25,7 +25,8 @@ public class PhotoDraw extends JPanel {
         setBackground(Color.WHITE);
 
         try {
-            image = ImageIO.read(new File("/Users/Rafael/Documents/teste.jpg"));
+            //image = ImageIO.read(new File("/Users/Rafael/Documents/teste.jpg"));
+            image = ImageIO.read(new File("C:/Users/Ploomes/Documents/Rafael Brandão/teste.jpg"));
         } catch (IOException ex) {
             // handle exception...
         }
@@ -50,8 +51,13 @@ public class PhotoDraw extends JPanel {
 //            }
 //        }
 
+
         int width = image.getWidth();
         int height = image.getHeight();
+
+//        BufferedImage tela = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+//
+//        g = tela.createGraphics();
 
         int[][] array = new int[width][height];
         int lastX = 0, lastY = 0;
@@ -86,21 +92,32 @@ public class PhotoDraw extends JPanel {
         System.out.println("lastX = " + lastX);
         System.out.println("lastY = " + lastY);
 
-        for(int i = 0; i <= 100000; i++){
+        for(int i = 0; i <= 1000; i++){
             for(int j = 0; j <= 200; j++){
-                randomX = (gerador.nextInt(width)/10) - width/20;
-                randomY = (gerador.nextInt(height)/10) - height/20;
+//                randomX = (gerador.nextInt(width)/10) - width/20;
+//                randomY = (gerador.nextInt(height)/10) - height/20;
+//
+//                if(lastX + randomX > 0 && lastX + randomX < width){
+//                    if(lastY + randomY > 0 && lastY + randomY < height){
+//                        if(nextX == -1){
+//                            nextX = lastX + randomX;
+//                            nextY = lastY + randomY;
+//                        }else if(array[lastX + randomX][lastY + randomY] < array[nextX][nextY]){
+//                            nextX = lastX + randomX;
+//                            nextY = lastY + randomY;
+//                        }
+//                    }
+//                }
 
-                if(lastX + randomX > 0 && lastX + randomX < width){
-                    if(lastY + randomY > 0 && lastY + randomY < height){
-                        if(nextX == -1){
-                            nextX = lastX + randomX;
-                            nextY = lastY + randomY;
-                        }else if(array[lastX + randomX][lastY + randomY] < array[nextX][nextY]){
-                            nextX = lastX + randomX;
-                            nextY = lastY + randomY;
-                        }
-                    }
+                randomX = (gerador.nextInt(width));
+                randomY = (gerador.nextInt(height));
+
+                if(nextX == -1){
+                    nextX = randomX;
+                    nextY = randomY;
+                }else if(array[randomX][randomY] < array[nextX][nextY]){
+                    nextX = randomX;
+                    nextY = randomY;
                 }
             }
             System.out.println("nextX = " + nextX);
@@ -112,6 +129,12 @@ public class PhotoDraw extends JPanel {
             nextX = -1;
             nextY = -1;
         }
+
+//        try {
+//            ImageIO.write(tela, "JPG", new File("C:/Users/Ploomes/Documents/Rafael Brandão/out.jpg"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         //g.drawOval( 150 , 150 , 1 , 1 );
         //g.drawLine(0, 0, width, height);
         //g.drawImage(image, 0, 0, null);
