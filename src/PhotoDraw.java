@@ -55,14 +55,13 @@ public class PhotoDraw extends JPanel {
 
         int[][] array = new int[width][height];
         int lastX = 0, lastY = 0;
-        int nextX, nextY;
-        int atualX = 0, atualY = 0;
+        int nextX = -1, nextY = -1;
         int randomX, randomY;
 
         Random gerador = new Random();
 
-        nextX = gerador.nextInt(width);
-        nextY = gerador.nextInt(height);
+//        nextX = gerador.nextInt(width);
+//        nextY = gerador.nextInt(height);
 
         Raster img = image.getData();
         for (int j = 0; j < width; j++) {
@@ -87,15 +86,19 @@ public class PhotoDraw extends JPanel {
         System.out.println("lastX = " + lastX);
         System.out.println("lastY = " + lastY);
 
-        for(int i = 0; i <= 1; i++){
+        for(int i = 0; i <= 100000; i++){
             for(int j = 0; j <= 200; j++){
                 randomX = (gerador.nextInt(width)/10) - width/20;
                 randomY = (gerador.nextInt(height)/10) - height/20;
-                if(nextX + randomX > 0 && nextX + randomX < width){
-                    if(nextY + randomY > 0 && nextY + randomY < height){
-                        if(array[nextX + randomX][nextY + randomY] < array[nextX][nextY]){
-                            atualX = nextX + randomX;
-                            atualY = nextY + randomY;
+
+                if(lastX + randomX > 0 && lastX + randomX < width){
+                    if(lastY + randomY > 0 && lastY + randomY < height){
+                        if(nextX == -1){
+                            nextX = lastX + randomX;
+                            nextY = lastY + randomY;
+                        }else if(array[lastX + randomX][lastY + randomY] < array[nextX][nextY]){
+                            nextX = lastX + randomX;
+                            nextY = lastY + randomY;
                         }
                     }
                 }
@@ -103,13 +106,11 @@ public class PhotoDraw extends JPanel {
             System.out.println("nextX = " + nextX);
             System.out.println("nextY = " + nextY);
             System.out.println("array = " + array[nextX][nextY]);
-            nextX = atualX;
-            nextY = atualY;
             g.drawLine(lastX, lastY, nextX, nextY);
             lastX = nextX;
             lastY = nextY;
-            nextX = gerador.nextInt(width);
-            nextY = gerador.nextInt(height);
+            nextX = -1;
+            nextY = -1;
         }
         //g.drawOval( 150 , 150 , 1 , 1 );
         //g.drawLine(0, 0, width, height);
