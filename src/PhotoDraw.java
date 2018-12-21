@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 
 
 public class PhotoDraw extends JPanel {
@@ -26,10 +24,16 @@ public class PhotoDraw extends JPanel {
 
         try {
             //image = ImageIO.read(new File("/Users/Rafael/Documents/teste.jpg"));
-            image = ImageIO.read(new File("C:/Users/Ploomes/Documents/Rafael Brandão/teste.jpg"));
+//            image = ImageIO.read(new File("/home/rafael.brandao/Documents/Projetos/Pessoal/PhotoDraw/src/cores.jpg"));
+            image = ImageIO.read(new File("/home/rafael.brandao/Documents/Projetos/Pessoal/PhotoDraw/src/tereza.jpg"));
         } catch (IOException ex) {
             // handle exception...
         }
+    }
+
+    public float mono(float red, float green, float blue){
+//        return (float) ((0.2125 * red) + (0.7154 * green) + (0.0721 * blue));
+        return (float) ((0.299 * red) + (0.587 * green) + (0.114 * blue));
     }
 
     public void paintComponent(Graphics g)  // draw graphics in the panel
@@ -79,56 +83,79 @@ public class PhotoDraw extends JPanel {
                 }
             }
         }
-//        for (int j = 0; j < width; j++) {
-//            for (int k = 0; k < height; k++) {
+        float alpha = 1.0f;
+        for (int j = 0; j < width; j++) {
+            for (int k = 0; k < height; k++) {
+                alpha = mono(img.getSampleFloat(j, k, 0)/255.0f, img.getSample(j, k, 1)/255.0f, img.getSample(j, k, 2)/255.0f);
+                if (alpha > 0.4f){
+                    alpha = 1.0f;
+                } else {
+                    alpha = 0.0f;
+                }
+                g.setColor(new Color(0, 0, 0, 1-alpha));
+                g.drawOval( j , k , 1 , 1 );
+
 //                array[j][k] = img.getSample(j, k, 0);
 //                if(img.getSample(j, k, 0) < 100){
+//                    g.setColor(new Color(0,0,0,alpha));
+//                    if(alpha > 0.0f){
+//                        alpha -= 0.00001f;
+//                        if(alpha < 0.0f){
+//                            alpha = 0.0f;
+//                        }
+//                    }
 //                    g.drawOval( lastX , lastY , 1 , 1 );
 //                    lastX = j;
 //                    lastY = k;
 //                }
-//            }
-//        }
-        System.out.println("lastX = " + lastX);
-        System.out.println("lastY = " + lastY);
-
-        for(int i = 0; i <= 1000; i++){
-            for(int j = 0; j <= 200; j++){
-//                randomX = (gerador.nextInt(width)/10) - width/20;
-//                randomY = (gerador.nextInt(height)/10) - height/20;
-//
-//                if(lastX + randomX > 0 && lastX + randomX < width){
-//                    if(lastY + randomY > 0 && lastY + randomY < height){
-//                        if(nextX == -1){
-//                            nextX = lastX + randomX;
-//                            nextY = lastY + randomY;
-//                        }else if(array[lastX + randomX][lastY + randomY] < array[nextX][nextY]){
-//                            nextX = lastX + randomX;
-//                            nextY = lastY + randomY;
-//                        }
-//                    }
-//                }
-
-                randomX = (gerador.nextInt(width));
-                randomY = (gerador.nextInt(height));
-
-                if(nextX == -1){
-                    nextX = randomX;
-                    nextY = randomY;
-                }else if(array[randomX][randomY] < array[nextX][nextY]){
-                    nextX = randomX;
-                    nextY = randomY;
-                }
             }
-            System.out.println("nextX = " + nextX);
-            System.out.println("nextY = " + nextY);
-            System.out.println("array = " + array[nextX][nextY]);
-            g.drawLine(lastX, lastY, nextX, nextY);
-            lastX = nextX;
-            lastY = nextY;
-            nextX = -1;
-            nextY = -1;
         }
+//        int max = 0;
+//        for (int j = 0; j < width; j++) {
+//            System.out.println("0: " + img.getSample(j, 0, 0) + "/ 1: " + img.getSample(j, 0, 1) + "/ 2: " + img.getSample(j, 0, 2));
+//
+//        }
+//        System.out.println("MAX = " + max);
+//        System.out.println("lastX = " + lastX);
+//        System.out.println("lastY = " + lastY);
+
+//        for(int i = 0; i <= 1000; i++){
+//            for(int j = 0; j <= 200; j++){
+////                randomX = (gerador.nextInt(width)/10) - width/20;
+////                randomY = (gerador.nextInt(height)/10) - height/20;
+////
+////                if(lastX + randomX > 0 && lastX + randomX < width){
+////                    if(lastY + randomY > 0 && lastY + randomY < height){
+////                        if(nextX == -1){
+////                            nextX = lastX + randomX;
+////                            nextY = lastY + randomY;
+////                        }else if(array[lastX + randomX][lastY + randomY] < array[nextX][nextY]){
+////                            nextX = lastX + randomX;
+////                            nextY = lastY + randomY;
+////                        }
+////                    }
+////                }
+//
+//                randomX = (gerador.nextInt(width));
+//                randomY = (gerador.nextInt(height));
+//
+//                if(nextX == -1){
+//                    nextX = randomX;
+//                    nextY = randomY;
+//                }else if(array[randomX][randomY] < array[nextX][nextY]){
+//                    nextX = randomX;
+//                    nextY = randomY;
+//                }
+//            }
+//            System.out.println("nextX = " + nextX);
+//            System.out.println("nextY = " + nextY);
+//            System.out.println("array = " + array[nextX][nextY]);
+//            g.drawLine(lastX, lastY, nextX, nextY);
+//            lastX = nextX;
+//            lastY = nextY;
+//            nextX = -1;
+//            nextY = -1;
+//        }
 
 //        try {
 //            ImageIO.write(tela, "JPG", new File("C:/Users/Ploomes/Documents/Rafael Brandão/out.jpg"));
